@@ -18,8 +18,8 @@ public struct CTPickerView: View {
     public var ctpColors:CTPColors?
     public var ctpStrings:CTPStrings?
 
-    public @State private var headerColors = CTPColors()
-    public @State private var pickerStrings = CTPStrings()
+    @State private var headerColors = CTPColors()
+    @State private var pickerStrings = CTPStrings()
     public var addItem: ((String) -> Void)?
     
     public var body: some View {
