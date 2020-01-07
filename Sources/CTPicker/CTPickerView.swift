@@ -9,18 +9,18 @@
 import SwiftUI
 
 public struct CTPickerView: View {
-    @Binding var presentPicker:Bool
-    @Binding var pickerField:String
-    @State var filterString:String = ""
-    @State var  items:[String] = []
-    @State private var originalItems:[String] = []
-    @State private var frameHeight:CGFloat = 400
-    var ctpColors:CTPColors?
-    var ctpStrings:CTPStrings?
+    public @Binding var presentPicker:Bool
+    public @Binding var pickerField:String
+    public @State var filterString:String = ""
+    public @State var  items:[String] = []
+    public @State private var originalItems:[String] = []
+    public @State private var frameHeight:CGFloat = 400
+    public var ctpColors:CTPColors?
+    public var ctpStrings:CTPStrings?
 
-    @State private var headerColors = CTPColors()
-    @State private var pickerStrings = CTPStrings()
-    var addItem: ((String) -> Void)?
+    public @State private var headerColors = CTPColors()
+    public @State private var pickerStrings = CTPStrings()
+    public var addItem: ((String) -> Void)?
     
     public var body: some View {
         let filterBinding = Binding<String>(
