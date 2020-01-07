@@ -9,12 +9,12 @@
 import SwiftUI
 
 public struct CTPickerView: View {
-    public @Binding var presentPicker:Bool
-    public @Binding var pickerField:String
-    public @State var filterString:String = ""
-    public @State var  items:[String] = []
-    public @State private var originalItems:[String] = []
-    public @State private var frameHeight:CGFloat = 400
+    @Binding public var presentPicker:Bool
+    @Binding public var pickerField:String
+    @State public var filterString:String = ""
+    @State public var  items:[String] = []
+    @State private var originalItems:[String] = []
+    @State private var frameHeight:CGFloat = 400
     public var ctpColors:CTPColors?
     public var ctpStrings:CTPStrings?
 
