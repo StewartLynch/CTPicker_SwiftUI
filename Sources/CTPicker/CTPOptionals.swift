@@ -8,7 +8,7 @@
 
 import UIKit
 
-public struct CTPColors {
+public class CTPColors {
     // Default values
     var headerBackgroundColor: UIColor
     var headerTintColor: UIColor
@@ -19,7 +19,7 @@ public struct CTPColors {
     }
 }
 
-public struct CTPStrings {
+public class CTPStrings {
     // Default values
     var pickText: String
     var addText: String
