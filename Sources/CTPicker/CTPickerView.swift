@@ -9,27 +9,29 @@
 import SwiftUI
 
 public struct CTPickerView: View {
-    @Binding  public var presentPicker:Bool
-    @Binding  public var pickerField:String
-    @State  var filterString:String = ""
-    @State  public var  items:[String] = []
+    @Binding var presentPicker:Bool
+    @Binding var pickerField:String
+    @Binding var items:[String]
+    var ctpColors:CTPColors?
+    var ctpStrings:CTPStrings?
+    var saveUpdates: (() -> Void)?
+    
+    public init(presentPicker: Binding<Bool>, pickerField: Binding<String>, items: Binding<[String]>, ctpColors:CTPColors? = nil, ctpStrings: CTPStrings? = nil, saveUpdates: (() -> Void)? = nil) {
+        self._presentPicker = presentPicker
+        self._pickerField = pickerField
+        self._items = items
+        self.ctpColors = ctpColors
+        self.ctpStrings = ctpStrings
+        self.saveUpdates = saveUpdates
+    }
+    
+    
+    @State var filterString:String = ""
     @State private var originalItems:[String] = []
     @State private var frameHeight:CGFloat = 400
-    public var ctpColors:CTPColors?
-    public var ctpStrings:CTPStrings?
 
     @State private var headerColors = CTPColors()
     @State private var pickerStrings = CTPStrings()
-    public var addItem: ((String) -> Void)?
-    
-    public init(presentPicker:Bool, pickerField:String, items:[String], ctpColors:CTPColors?, ctpStrings:CTPStrings?, addItem:((String) -> Void)?) {
-        self.presentPicker = presentPicker
-        self.pickerField = pickerField
-        self.items = items
-        self.ctpColors = ctpColors
-        self.ctpStrings = ctpStrings
-        self.addItem = addItem
-    }
     
     public var body: some View {
         let filterBinding = Binding<String>(
@@ -59,11 +61,12 @@ public struct CTPickerView: View {
                         }.padding(10)
                         Spacer()
                         Group {
-                            if addItem != nil {
+                            if saveUpdates != nil {
                                 Button(action: {
                                     self.items = self.originalItems
-                                    if let addItem = self.addItem {
-                                        addItem(self.filterString)
+                                    if let _ = self.saveUpdates {
+                                        self.items.append(self.filterString)
+                                        self.saveUpdates!()
                                     }
                                     self.pickerField = self.filterString
                                     withAnimation {
@@ -77,7 +80,7 @@ public struct CTPickerView: View {
                         }
                     }.background(Color(headerColors.headerBackgroundColor))
                         .foregroundColor(Color(headerColors.headerTintColor))
-                    Text(items.count > 0 ? pickerStrings.pickText: (addItem != nil) ? pickerStrings.addText : pickerStrings.noItemText)
+                    Text(items.count > 0 ? pickerStrings.pickText: (saveUpdates != nil) ? pickerStrings.addText : pickerStrings.noItemText)
                         .font(.caption)
                         .padding(.horizontal,10)
                     TextField(pickerField.isEmpty ? items.count > 0 ? pickerStrings.searchPlaceHolder : pickerStrings.newEntry : pickerField, text: filterBinding)
@@ -132,6 +135,3 @@ public struct CTPickerView: View {
         }
     }
 }
-
-
-
