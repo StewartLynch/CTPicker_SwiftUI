@@ -10,22 +10,32 @@ import UIKit
 
 public struct CTPColors {
     // Default values
-    public var headerBackgroundColor = UIColor.darkGray
-    public var headerTintColor = UIColor.white
+    var headerBackgroundColor: UIColor
+    var headerTintColor: UIColor
     
-    public init() {}
+    public init(headerBackgroundColor:UIColor, headerTintColor: UIColor) {
+        self.headerBackgroundColor = UIColor.darkGray
+        self.headerTintColor = UIColor.white
+    }
 }
 
 public struct CTPStrings {
     // Default values
-    public var pickText = "Tap an entry to select it, or type in new entry."
-    public var addText = "Type new entry then tap '+' button to add new entry"
-    public var noItemText = "No items match"
-    public var searchPlaceHolder = "Filter by entering text..."
-    public var newEntry = "New Entry"
-    public var cancelBtnTitle =  "Cancel"
+    var pickText: String
+    var addText: String
+    var noItemText: String
+    var searchPlaceHolder: String
+    var newEntry: String
+    var cancelBtnTitle: String
     
-    public init() {}
+    public init(pickText: String, addText: String, noItemText: String, searchPlaceHolder: String, newEntry: String, cancelBtnTitle: String) {
+        self.pickText = "Tap an entry to select it, or type in new entry."
+        self.addText = "Type new entry then tap '+' button to add new entry"
+        self.noItemText = "No items match"
+        self.searchPlaceHolder = "Filter by entering text..."
+        self.newEntry = "New Entry"
+        self.cancelBtnTitle =  "Cancel"
+    }
 }
 
 
