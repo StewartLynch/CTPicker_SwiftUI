@@ -14,7 +14,7 @@ public class CTPColors {
     var headerTintColor: UIColor
     
     public init(headerBackgroundColor:UIColor = UIColor.darkGray, headerTintColor: UIColor = UIColor.white) {
-        self.headerBackgroundColor  = headerTintColor
+        self.headerBackgroundColor  = headerBackgroundColor
         self.headerTintColor = headerTintColor
     }
 }
