@@ -107,7 +107,7 @@ public struct CTPickerView: View {
                 .frame(height: frameHeight)
                 .padding(EdgeInsets(top: 20, leading: 10, bottom: 10, trailing: 10))
                 Spacer()
-            }
+            }.padding(.top, 40)
         }
         .edgesIgnoringSafeArea(.all)
         .onAppear {
