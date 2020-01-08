@@ -9,14 +9,6 @@
 import SwiftUI
 
 public struct CTPickerView: View {
-    public init(presentPicker:Bool, pickerField:String, filterString:String, items:[String], ctpColors:CTPColors?, ctpStrings:CTPStrings, addItem: ((String) -> Void)?) {
-        self.presentPicker = presentPicker
-        self.filterString = filterString
-        self.items = items
-        self.ctpColors = ctpColors
-        self.ctpStrings = ctpStrings
-        self.addItem = addItem
-    }
     @Binding  var presentPicker:Bool
     @Binding  var pickerField:String
     @State  var filterString:String = ""
@@ -28,8 +20,9 @@ public struct CTPickerView: View {
 
     @State private var headerColors = CTPColors()
     @State private var pickerStrings = CTPStrings()
-    public var addItem: ((String) -> Void)?
+    var addItem: ((String) -> Void)?
     
+    public init() {}
     
     public var body: some View {
         let filterBinding = Binding<String>(
