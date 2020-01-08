@@ -22,7 +22,7 @@ public struct CTPickerView: View {
     @State private var pickerStrings = CTPStrings()
     var addItem: ((String) -> Void)?
     
-    public init(presentPicker:Bool, pickerField:String, items:[String], ctpColors:CTPColors, ctpStrings:CTPStrings, addItem:((String) -> Void)?) {
+    public init(presentPicker:Bool, pickerField:String, items:[String], ctpColors:CTPColors?, ctpStrings:CTPStrings?, addItem:((String) -> Void)?) {
         self.presentPicker = presentPicker
         self.pickerField = pickerField
         self.items = items
