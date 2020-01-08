@@ -13,9 +13,9 @@ public struct CTPColors {
     var headerBackgroundColor: UIColor
     var headerTintColor: UIColor
     
-    public init(headerBackgroundColor:UIColor, headerTintColor: UIColor) {
-        self.headerBackgroundColor = UIColor.darkGray
-        self.headerTintColor = UIColor.white
+    public init(headerBackgroundColor:UIColor = UIColor.darkGray, headerTintColor: UIColor = UIColor.white) {
+        self.headerBackgroundColor  = headerTintColor
+        self.headerTintColor = headerTintColor
     }
 }
 
@@ -28,13 +28,18 @@ public struct CTPStrings {
     var newEntry: String
     var cancelBtnTitle: String
     
-    public init(pickText: String, addText: String, noItemText: String, searchPlaceHolder: String, newEntry: String, cancelBtnTitle: String) {
-        self.pickText = "Tap an entry to select it, or type in new entry."
-        self.addText = "Type new entry then tap '+' button to add new entry"
-        self.noItemText = "No items match"
-        self.searchPlaceHolder = "Filter by entering text..."
-        self.newEntry = "New Entry"
-        self.cancelBtnTitle =  "Cancel"
+    public init(pickText: String = "Tap an entry to select it, or type in new entry.",
+                addText: String = "Type new entry then tap '+' button to add new entry",
+                noItemText: String = "No items match",
+                searchPlaceHolder: String = "Filter by entering text...",
+                newEntry: String = "New Entry",
+                cancelBtnTitle: String =  "Cancel") {
+        self.pickText = pickText
+        self.addText = addText
+        self.noItemText = noItemText
+        self.searchPlaceHolder = searchPlaceHolder
+        self.newEntry = newEntry
+        self.cancelBtnTitle = cancelBtnTitle
     }
 }
 
