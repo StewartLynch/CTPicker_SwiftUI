@@ -12,6 +12,8 @@ public struct CTPColors {
     // Default values
     public var headerBackgroundColor = UIColor.darkGray
     public var headerTintColor = UIColor.white
+    
+    public init() {}
 }
 
 public struct CTPStrings {
@@ -22,6 +24,8 @@ public struct CTPStrings {
     public var searchPlaceHolder = "Filter by entering text..."
     public var newEntry = "New Entry"
     public var cancelBtnTitle =  "Cancel"
+    
+    public init() {}
 }
 
 
