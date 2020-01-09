@@ -98,7 +98,7 @@ public struct CTPickerView: View {
                     TextField(pickerField.isEmpty ? items.count > 0 ? pickerStrings.searchPlaceHolder : pickerStrings.newEntry : pickerField, text: filterBinding)
                         .textFieldStyle(RoundedBorderTextFieldStyle())
                         .padding()
-                    if items.count > 0 {
+//                    if items.count > 0 {
                     List {
                         ForEach(noSort ? items : items.sorted(), id: \.self) { item in
                             Button(action: {
@@ -112,7 +112,7 @@ public struct CTPickerView: View {
                             }
                         }
                     }
-                    }
+//                    }
                 }
                 .background(Color(UIColor.secondarySystemBackground))
                 .cornerRadius(10)
