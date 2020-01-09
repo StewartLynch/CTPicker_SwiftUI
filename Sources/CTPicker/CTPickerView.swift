@@ -15,9 +15,9 @@ public struct CTPickerView: View {
     var noSort:Bool
     var ctpColors:CTPColors?
     var ctpStrings:CTPStrings?
-    var saveUpdates: (() -> Void)?
+    var saveUpdates: ((String) -> Void)?
     
-    public init(presentPicker: Binding<Bool>, pickerField: Binding<String>, items: Binding<[String]>, noSort:Bool = false, ctpColors:CTPColors? = nil, ctpStrings: CTPStrings? = nil, saveUpdates: (() -> Void)? = nil) {
+    public init(presentPicker: Binding<Bool>, pickerField: Binding<String>, items: Binding<[String]>, noSort:Bool = false, ctpColors:CTPColors? = nil, ctpStrings: CTPStrings? = nil, saveUpdates: ((String) -> Void)? = nil) {
         self._presentPicker = presentPicker
         self._pickerField = pickerField
         self._items = items
@@ -69,7 +69,7 @@ public struct CTPickerView: View {
                                     self.items = self.originalItems
                                     if let _ = self.saveUpdates {
                                         self.items.append(self.filterString)
-                                        self.saveUpdates!()
+                                        self.saveUpdates!(self.filterString)
                                     }
                                     self.pickerField = self.filterString
                                     withAnimation {
@@ -139,6 +139,5 @@ public struct CTPickerView: View {
         }
     }
 }
-
 
 

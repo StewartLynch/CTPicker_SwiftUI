@@ -73,117 +73,65 @@ You can pass in any array of strings,  but to continue on with this example, I w
 @State private var foodArray = ["Milk", "Apples", "Sugar", "Eggs"]
 ```
 
-Step 5 - Create
+##### Step 4 - Enclose exsiting view in a ZStack
 
-##### Step 2- ViewController Delegates 
+The CTPickerVew is a view that will be presented on top of the exsiting view.  To allow this, we need to surround the existing view including the navigationView if one exists within a ZStack
 
-The ViewControllers containing your UITextFields must conform to `UITextFieldDelegate` and to `CTPickerDelegate`
+### ![ZStack](ReadMeImages/ZStack.gif)
 
-The conformance to CTPickerDelegate will require the addition of the `setTextField` delegate function.  See step 6 below.
+##### Step 5  - Conditionally Present the CTPicker
 
-```swift
-    func setField(value: String, type:CTPickerType, selectedTextField: UITextField, new: Bool) {
-        <#code#>
-    }
-```
+You can now add as the second item in the ZStack, a conditional presentation of the CTPickerView.  The condition will be whenver our `presentPicker` boolean value is set to `true`.  
 
-##### Step 3 - Create an optional ctPickerDelegate variable
+The CTPickerView by default requires 3 parameters which are the 3 state variables:
 
-```swift
-class ViewController: UIViewController, UITextFieldDelegate, CTPickerDelegate {
-    // Required variable
-    weak var cTDelegate:CTPickerDelegate?
-```
-
-
-
-##### Step 4 - Assign viewController to the cTDelegate variable
+- the presentation boolean -  `$presentPicker`
+- the textField state variable - `$food`
+- The string array - `$foodArray`
 
 ```swift
-    override func viewDidLoad() {
-        super.viewDidLoad()
-        // You can do this in viewDidLoad
-        cTDelegate = self
-    }
-```
-
-##### Step 5 - Create your UITextFields
-
-In your ViewController, create your UITextFields either programmatically or using Interface Builder.  In each case, the assign the ViewController as the UITextField delegate.
-
-```swift
-// Must assign the text fields as the UITextFieldDelegates
-    varietyTextField.delegate = self
-    countryTextField.delegate = self
-    wineryTextField.delegate = self
-```
-
-##### Step 6 - Implement textFieldDidBeginEditing
-
-Now, when your users tap into the field you want to present the list of values.  The `CTPicker.presentCTPicker` function must be called within the `textFieldDidBeginEditing`: function which is a UITextField delegate function.
-
-No matter what optional style values you choose, you **always** pass `self` as the first parameter and `textField` as the second one.
-
-The third parameter is the array of strings.  In the example shown, I am passing `varietyArray`, `countryArray` and `wineryArray`.
-
-The remaining parameters (except for the last one) are optional and used if you wish to custom style the navigation bar on the picker and the tint color of the action buttons for the 'add' alert or if you wish to have your own custom strings used.  You can choose to include any number of these optional parameters, or none at all.  See the **Optional parameters** section below for more detail.
-
-The final parameter, `isAddEnabled`, defaults to **false**, which means the array is **Read Only**.  If you wish to allow your users to add to the list of options, include `isAddEnabled: true` as the final parameter.
-
-Here is an example.
-
-```swift
-func textFieldDidBeginEditing(_ textField: UITextField) {
-  // Dismiss the keyboard immediately
-  textField.resignFirstResponder() 
-  // Depending on the type of field tapped, pass the viewController, the textField and current array of strings to the presentPickerFunction along with any of the optional parameters
-  switch textField {
-  case varietyTextField:
-      // Default presentation - no adding of items to the array
-      CTPicker.presentCTPicker(on: self,
-                    textField: textField,
-                    items: varietyArray)
-  case countryTextField:
-      // Default presentation - but ability to add items to the array
-      CTPicker.presentCTPicker(on: self,
-                    textField: textField,
-                    items: countryArray,
-                    isAddEnabled: true)
-  case wineryTextField:
-    // Default presentation - but ability to add items to the array
-      CTPicker.presentCTPicker(on: self,
-                    textField: textField,
-                    items: wineryArray,
-                    isAddEnabled: true)
-  default:
-      break
-  }
+ if presentPicker {
+    CTPickerView(presentPicker: $presentPicker,
+                 pickerField: $food,
+                 items: $foodArray)
 }
 ```
 
-##### Step 6 - Handle the selected or added item
+##### Step 6 - Disable Entry into the TextField and add TapGesture
 
-Once an item is selected or handled, you must deal with it using the delegate function.
+To present the picker, we must first disable entry into the TextField  (`.disabled(true)`) and subsequently add an `.onTapGesture` to the TextField.
 
 ```swift
-func setField(value: String, selectedTextField: UITextField, new: Bool) {
-  // Assign the selected or new value to the textField
-  selectedTextField.text = value
-  // if the value is an addition to the array, then you need to append it and update the  datasource if necessary.
-  if new {
-      switch selectedTextField {
-      case countryTextField:
-          countryArray.append(value)
-      case wineryTextField:
-          wineryArray.append(value)
-      default:
-          break
-      }     
-  }
+TextField("Enter food", text: $food).disabled(true)
+    .onTapGesture {
+            
 }
 ```
 
-### Optional Parameters
+##### Step 7 - Set the presentation state variable to true
+
+WIthin the onTapGesture closure block we can set the presentPicker variable to true.  To make the presentation more visual, we can do this within a `withAnimation` block.
+
+```swift
+withAnimation {
+   self.presentPicker = true
+}
+```
+The final result looks like this:
+
+![Basic](ReadMeImages/Basic.png)
+
+If you run your app now, you will find that this is indeed a functional picker.  However, we have not yet added the ability to add items.
+
+##### Step 8 - Enabling Adding of Items
+
+To add items, you first need to create a function that will get executed when the picker closes.  This function accepts one parameter, a string that will be the item added.
+
+**Note:** Since the array being passed to the CTPickerView is bound, it will be updated, but you may wish to capture that value and update your back end data store in a way that requires the actual entry.  You may, or may not need this data, but the update function requires it.  It of course, can be ignored.
+
+Create a function like this:
+
+Optional Parameters
 
 As mentioned above there are additional optional parameters that you can pass to the `presentCTPicker` function.  
 
