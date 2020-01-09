@@ -6,6 +6,7 @@
 If you wish to limit your user to picking from an array of strings, then one of the SwiftUI Pickers may meet your needs.  However, as the number of entries grow, these controls may not be very efficient.  With `CTPicker`  I present the user with a list of all options but with a filter text field that will filter as you type to zoom in on the preferred value.  If the value is not available, there is also the optional "add" button to allow your users to add to the data source.
 
 ### Requirements
+
 - iOS 13.0+
 - Xcode 11.0+
 - SwiftUI
@@ -131,7 +132,70 @@ To add items, you first need to create a function that will get executed when th
 
 Create a function like this:
 
-Optional Parameters
+```swift
+func saveUpdates(newItems:String) {
+   // Do whatever you want to with this new item
+   // You may need to update and save the data for persistence
+}
+```
+
+##### Step 9 - Add the saveUpdates parameter to your CTPickerView
+
+With the function created, you can now add the additional `saveUpdates` parameter to your CTPickerView.
+
+```swift
+CTPickerView(presentPicker: $presentPicker,
+             pickerField: $food,
+             items: $foodArray,
+             saveUpdates: saveUpdates)
+```
+
+If you run the application now, you will see that the picker has an Add button on the top right.  If you enter a value in the filter field that does not match any of the existing items, it will be enabled.  When you tap it, the item gets added to the array and runs the `saveUpdates` function, passing in this new value and the CTPickerView is dismissed.  If you tap the field again, you will see your new entry in the selection list.
+
+##### Step 9 - Fixing the dismissal Animation
+
+You will see that when the CTPickerView dismisses, it is immediate, there is no animation.  I believe that this is a bug in SwiftUI, but there is a quick fix.
+
+Right after your CTPickerView has been created, but still within the `if presentPicker` block enter:
+
+```swift
+.zIndex(1)
+```
+
+### Optional Parameters
+
+There are three additional optional parameters that you can pass to the CTPickerView.  
+
+##### Item Sorting
+
+By default, the items in your array are sorted alphabetically.  If you wish to keep the sort order of your string array as is, you can pass the optional parameter
+
+```swift
+noSort: true
+```
+
+this must be added after the `items` parameter and before the `saveUpdates` parameter or either of the following two.
+
+##### Custom Colors
+
+You can change the color of the top buttonbar of the CTPickerView and the tint of the buttons.  You can change one or the other.
+
+The easiest way to do this is to create an instance of `CTPColors`at the top of your struct, including one or both of the two properties which are UIColor.  For example:
+
+```swift
+let ctpColors = CTPColors(headerBackgroundColor: .black,
+                          headerTintColor: .orange)
+```
+
+Now you can add this as the next parameter in your CTPickerView
+
+```swift
+ctpColors: ctpColors
+```
+
+You can also change all of the caption text that is used within CTPicker to another language, or to alternate English terms.
+
+If you do not include either of th
 
 As mentioned above there are additional optional parameters that you can pass to the `presentCTPicker` function.  
 

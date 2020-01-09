@@ -6,18 +6,26 @@
 //  Copyright © 2020 CreaTECH Solutions. All rights reserved.
 //
 
+//
+//  CTPickerView.swift
+//  CTPicker_SwiftUI
+//
+//  Created by Stewart Lynch on 2020-01-06.
+//  Copyright © 2020 CreaTECH Solutions. All rights reserved.
+//
+
 import SwiftUI
 
 public struct CTPickerView: View {
     @Binding var presentPicker:Bool
     @Binding var pickerField:String
     @Binding var items:[String]
+    var saveUpdates: ((String) -> Void)?
     var noSort:Bool
     var ctpColors:CTPColors?
     var ctpStrings:CTPStrings?
-    var saveUpdates: ((String) -> Void)?
     
-    public init(presentPicker: Binding<Bool>, pickerField: Binding<String>, items: Binding<[String]>, noSort:Bool = false, ctpColors:CTPColors? = nil, ctpStrings: CTPStrings? = nil, saveUpdates: ((String) -> Void)? = nil) {
+    public init(presentPicker: Binding<Bool>, pickerField: Binding<String>, items: Binding<[String]>, saveUpdates: ((String) -> Void)? = nil, noSort:Bool = false, ctpColors:CTPColors? = nil, ctpStrings: CTPStrings? = nil) {
         self._presentPicker = presentPicker
         self._pickerField = pickerField
         self._items = items
@@ -139,5 +147,4 @@ public struct CTPickerView: View {
         }
     }
 }
-
 
