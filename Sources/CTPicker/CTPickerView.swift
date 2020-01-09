@@ -12,14 +12,16 @@ public struct CTPickerView: View {
     @Binding var presentPicker:Bool
     @Binding var pickerField:String
     @Binding var items:[String]
+    var noSort:Bool
     var ctpColors:CTPColors?
     var ctpStrings:CTPStrings?
     var saveUpdates: (() -> Void)?
     
-    public init(presentPicker: Binding<Bool>, pickerField: Binding<String>, items: Binding<[String]>, ctpColors:CTPColors? = nil, ctpStrings: CTPStrings? = nil, saveUpdates: (() -> Void)? = nil) {
+    public init(presentPicker: Binding<Bool>, pickerField: Binding<String>, items: Binding<[String]>, noSort:Bool = false, ctpColors:CTPColors? = nil, ctpStrings: CTPStrings? = nil, saveUpdates: (() -> Void)? = nil) {
         self._presentPicker = presentPicker
         self._pickerField = pickerField
         self._items = items
+        self.noSort = noSort
         self.ctpColors = ctpColors
         self.ctpStrings = ctpStrings
         self.saveUpdates = saveUpdates
@@ -59,6 +61,7 @@ public struct CTPickerView: View {
                         }) {
                             Text(pickerStrings.cancelBtnTitle)
                         }.padding(10)
+
                         Spacer()
                         Group {
                             if saveUpdates != nil {
@@ -80,6 +83,7 @@ public struct CTPickerView: View {
                         }
                     }.background(Color(headerColors.headerBackgroundColor))
                         .foregroundColor(Color(headerColors.headerTintColor))
+        
                     Text(items.count > 0 ? pickerStrings.pickText: (saveUpdates != nil) ? pickerStrings.addText : pickerStrings.noItemText)
                         .font(.caption)
                         .padding(.horizontal,10)
@@ -88,7 +92,7 @@ public struct CTPickerView: View {
                         .padding()
                     if items.count > 0 {
                     List {
-                        ForEach(items.sorted(), id: \.self) { item in
+                        ForEach(noSort ? items : items.sorted(), id: \.self) { item in
                             Button(action: {
                                 self.items = self.originalItems
                                 self.pickerField = item
@@ -107,7 +111,7 @@ public struct CTPickerView: View {
                 .frame(height: frameHeight)
                 .padding(EdgeInsets(top: 20, leading: 10, bottom: 10, trailing: 10))
                 Spacer()
-            }.padding(.top, 40)
+            }.padding(.top, 20)
         }
         .edgesIgnoringSafeArea(.all)
         .onAppear {
@@ -135,3 +139,6 @@ public struct CTPickerView: View {
         }
     }
 }
+
+
+
