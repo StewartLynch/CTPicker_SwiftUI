@@ -3,6 +3,8 @@
 
 ### What is this?
 
+<img src="ReadMeImages/demo.gif" alt="demo" style="zoom:60%;" />
+
 If you wish to limit your user to picking from an array of strings, then one of the default SwiftUI pickers may meet your needs.  However, as the number of entries grow, these controls may not be very efficient.  With `CTPicker`  you can present the user with a list of all options but with a filter text field that will filter as you type to zoom in on the preferred value.  If the value is not available, there is also the optional "add" button to allow your users to add to the data source of options.
 
 ### Requirements
