@@ -3,7 +3,7 @@
 
 ### What is this?
 
-If you wish to limit your user to picking from an array of strings, then one of the SwiftUI Pickers may meet your needs.  However, as the number of entries grow, these controls may not be very efficient.  With `CTPicker`  I present the user with a list of all options but with a filter text field that will filter as you type to zoom in on the preferred value.  If the value is not available, there is also the optional "add" button to allow your users to add to the data source.
+If you wish to limit your user to picking from an array of strings, then one of the default SwiftUI pickers may meet your needs.  However, as the number of entries grow, these controls may not be very efficient.  With `CTPicker`  you can present the user with a list of all options but with a filter text field that will filter as you type to zoom in on the preferred value.  If the value is not available, there is also the optional "add" button to allow your users to add to the data source of options.
 
 ### Requirements
 
@@ -12,9 +12,11 @@ If you wish to limit your user to picking from an array of strings, then one of 
 - SwiftUI
 ### YouTube Video
 
-Watch this video to see installation and use as described below.
+Watch this video to see installation and use as described below. Additional tips for adding more than one CTPickerView to a SwiftUI view is also presented in the video.
 
 Coming soon
+
+#### The Starting Example
 
 The best way to explain how to implement CTPicker is to work through an example  of how to add CTPicker to a view containing a single TextField.  The example is a TextField that asks the user to enter a food item.
 
@@ -46,11 +48,11 @@ You now have the dependency installed and are ready to import CTPicker
 
 ### Set up
 
-Setting up to use this solution on one or more of your TextFields is fairly straight forward.
+Setting up to use this solution to change the TextField into a CTPicker is straight forward.
 
 ##### Step 1 - Import CTPicker
 
-In the View where you are going to implement `CTPicker` on your TextFields, import CTPicker.
+In the View where you are going to implement `CTPicker` on your TextField, import CTPicker.
 
 ```swift
 import CTPicker
@@ -58,7 +60,7 @@ import CTPicker
 
 ##### Step 2 - Create initial presentation @State variable
 
-The next step is to create the presentation boolean that when set to true, will present the picker.  The initial value is set to false
+The next step is to create the presentation boolean variable that when set to true, will present the picker.  As this will be changed in the view, it must be created as an @State variable.  The initial value is set to false.
 
 ```swift
 @State private var presentPicker:Bool = false
@@ -66,9 +68,9 @@ The next step is to create the presentation boolean that when set to true, will 
 
 ##### Step 3 - Create String Arrays @State variables if necessary
 
-When presenting CTPicker, you will be asked to pass in the array of strings and this array will be bound to a @Binding variable in CTPicker so that if you add to the array, it will be updated in your content view as well. (See saving data below). 
+When presenting the CTPickerView, you will be asked to pass in the array of strings and this array will be bound to a @Binding variable in CTPicker so that if you add to the array, it will be updated in your content view as well. (See saving data below). 
 
-You can pass in any array of strings,  but to continue on with this example, I will just create it within the existing view
+You can pass in any array of strings,  but to continue on with this example, I will just create it within the existing view and it must be created as an @State variable (or be the property of an @ObservedObject)
 
 ```swift
 @State private var foodArray = ["Milk", "Apples", "Sugar", "Eggs"]
@@ -76,18 +78,18 @@ You can pass in any array of strings,  but to continue on with this example, I w
 
 ##### Step 4 - Enclose exsiting view in a ZStack
 
-The CTPickerVew is a view that will be presented on top of the exsiting view.  To allow this, we need to surround the existing view including the navigationView if one exists within a ZStack
+The CTPickerVew is a view that will be presented on top of the exsiting view.  To allow this, we need to surround the existing view including the NavigationView if one exists within a `ZStack`
 
 ### ![ZStack](ReadMeImages/ZStack.gif)
 
 ##### Step 5  - Conditionally Present the CTPicker
 
-You can now add as the second item in the ZStack, a conditional presentation of the CTPickerView.  The condition will be whenver our `presentPicker` boolean value is set to `true`.  
+You can now add, as the second item in the ZStack, a conditional presentation of the CTPickerView.  The condition will be whenever our `presentPicker` boolean value is set to `true`.  
 
 The CTPickerView by default requires 3 parameters which are the 3 state variables:
 
 - the presentation boolean -  `$presentPicker`
-- the textField state variable - `$food`
+- the TextField state variable - `$food`
 - The string array - `$foodArray`
 
 ```swift
@@ -111,14 +113,14 @@ TextField("Enter food", text: $food).disabled(true)
 
 ##### Step 7 - Set the presentation state variable to true
 
-WIthin the onTapGesture closure block we can set the presentPicker variable to true.  To make the presentation more visual, we can do this within a `withAnimation` block.
+WIthin the onTapGesture closure block we can set the `presentPicker` variable to true.  To make the presentation more visual, we can do this within a `withAnimation` block.
 
 ```swift
 withAnimation {
    self.presentPicker = true
 }
 ```
-The final result looks like this:
+The final result looks like this (numbers refer to steps above)
 
 ![Basic](ReadMeImages/Basic.png)
 
@@ -128,7 +130,9 @@ If you run your app now, you will find that this is indeed a functional picker. 
 
 To add items, you first need to create a function that will get executed when the picker closes.  This function accepts one parameter, a string that will be the item added.
 
-**Note:** Since the array being passed to the CTPickerView is bound, it will be updated, but you may wish to capture that value and update your back end data store in a way that requires the actual entry.  You may, or may not need this data, but the update function requires it.  It of course, can be ignored.
+**Note:** Since the array being passed to the CTPickerView is bound to CTPickerView, it will be updated, but you may wish to capture that value and update your back end data store in a way that requires this entry.  You may, or may not need this data, but the update function requires it.  It of course, can be ignored.
+
+In any case, the function will allow you to persist data between sessions.
 
 Create a function like this:
 
@@ -150,11 +154,11 @@ CTPickerView(presentPicker: $presentPicker,
              saveUpdates: saveUpdates)
 ```
 
-If you run the application now, you will see that the picker has an Add button on the top right.  If you enter a value in the filter field that does not match any of the existing items, it will be enabled.  When you tap it, the item gets added to the array and runs the `saveUpdates` function, passing in this new value and the CTPickerView is dismissed.  If you tap the field again, you will see your new entry in the selection list.
+If you run the application now, you will see that the picker has an Add button on the top right.  If you enter a value in the filter field that does not match any of the existing items, it will be enabled.  When you tap it, the item gets added to the array and runs the `saveUpdates` function, passing in this new value and the `CTPickerView` is dismissed.  If you tap the field again, you will see your new entry in the selection list.
 
 ##### Step 9 - Fixing the dismissal Animation
 
-You will see that when the CTPickerView dismisses, it is immediate, there is no animation.  I believe that this is a bug in SwiftUI, but there is a quick fix.
+You will see that when the CTPickerView dismisses, it is immediate. There is no animation.  I believe that this is a bug in SwiftUI, but there is a quick fix.
 
 Right after your CTPickerView has been created, but still within the `if presentPicker` block enter:
 
@@ -174,11 +178,11 @@ By default, the items in your array are sorted alphabetically.  If you wish to k
 noSort: true
 ```
 
-this must be added after the `items` parameter and before the `saveUpdates` parameter or either of the following two.
+this must be added after the `saveUpdates` parameter  if you have one. If not, it follows the `items` parameter.
 
 ##### Custom Colors
 
-You can change the color of the top buttonbar of the CTPickerView and the tint of the buttons.  You can change one or the other.
+You can change the color of the top buttonbar of the `CTPickerView` and the tint of the buttons.  You can change one or both.
 
 The easiest way to do this is to create an instance of `CTPColors`at the top of your struct, including one or both of the two properties which are UIColor.  For example:
 
@@ -193,62 +197,33 @@ Now you can add this as the next parameter in your CTPickerView
 ctpColors: ctpColors
 ```
 
-You can also change all of the caption text that is used within CTPicker to another language, or to alternate English terms.
-
-If you do not include either of th
-
-As mentioned above there are additional optional parameters that you can pass to the `presentCTPicker` function.  
-
 ##### Custom Strings
 
-The first allows you to pass a set of string values that will override  the default set used on the CTPicker navigation bar and on the add new item alert.  To create these strings, first declare an instance of the CTPicker.CTStrings class and enter your custom strings.  If you do not use this option, the default values shown will be used.
+The final option is to change one or more of the strings used in CTPickerView. The default values are:
 
 ```swift
-  let ctStrings = CTPicker.CTStrings(pickText: "Tap on a line to select.",
-                                     addText: "Tap '+' to add a new entry.",
-                                     searchPlaceHolder: "Filter by entering text...",
-                                     addAlertTitle: "Add new item",
-                                     addBtnTitle: "Add",
-                                     cancelBtnTitle: "Cancel")
+pickText - "Tap an entry to select it, or type in new entry.",
+addText - "Type new entry then tap '+' button to add new entry",
+noItemText - "No items match",
+searchPlaceHolder - "Filter by entering text...",
+newEntry - "New Entry",
+cancelBtnTitle - "Cancel"
 ```
 
-Once you have declared your CTStrings object, you can pass it on to the function as the 4th parameter.
+As with the `CTPColors`, you can create an instance of `CTPStrings` and change one or more of the properties.  For example, if all you want to to is change the `cancelBtnTitle` property, you can create your ctpStrings instance like this:
+
 ```swift
-CTPicker.presentCTPicker(on: self,
-                    textField: textField,
-                    items: wineryArray,
-                    ctStrings: ctStrings,
-                    isAddEnabled: true)
+let ctpStrings = CTPStrings(cancelBtnTitle: "Dismiss")
 ```
 
-##### Custom Colors
+and then, add the final parameter to your CTPickerView
 
-The final 3 parameters are custom colors that you can pass to the function that will override the default colors used on the CTPicker navigation bar and on the add new item alert.
-
-**Note:** The default colors support **dark mode** if you are using CTPicker on a device running iOS 13 or later.  If you are going to customize the colors, ensure that you include dark mode supported color sets.
-
-These three colors are:
-
-- **navBarBarTintColor** - the background color of the navigation bar
-- **navBarTintColor** - the navigation bar button colors
-- **actionTintColor** - the alert button colors
-
-To pass these on to the function, you can add these as the 5th, 6th and 7th parameters.  Each one is optional so you may choose to leave one or more out.
-
-Here is an example of a `CTPicker.presentCTPicker` call using all options.
-```swift
- let ctStrings = CTPicker.CTStrings(pickText: "Lorem ipsum dolor sit amet.",
-                                    addText: "Consectetur adipiscing elit.",
-                                    searchPlaceHolder: "Vivamus ut dignissim dui...",
-                                    addAlertTitle: "Excepteur sint occaecat",
-                                    addBtnTitle: "Anim",
-                                    cancelBtnTitle: "Sund")
- CTPicker.presentCTPicker(on: self,
-                          textField: textField,
-                          items: wineryArray,
-                          ctStrings: ctStrings,
-                          navBarBarTintColor: .red,
-                          navBarTintColor: .white,
-                          actionTintColor: .purple,
-                          isAddEnabled: true)
 ```
+ctpStrings: ctpStrings
+```
+
+Here is your CTPickerView with the saveUpdates function and all optional parameters as well as the fix for the dismissal animation.
+
+![Optionals](ReadMeImages/Optionals.png)
+
+If you are more of a visual learner and also want to get tips on how to add more than one CTPickerView to a single SwiftUI View, please watch the YouTube video.
