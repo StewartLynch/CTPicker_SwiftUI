@@ -1,5 +1,5 @@
 # CTPicker_SwiftUI
-[![Platform](http://img.shields.io/badge/platform-iOS-blue.svg?style=flat)](https://developer.apple.com/iphone/index.action)[![](http://img.shields.io/badge/language-Swift-brightgreen.svg?color=orange)](https://developer.apple.com/swift)![](https://img.shields.io/github/tag/stewartlynch/CTPicker_SwiftUI?style=flat))![](https://img.shields.io/github/last-commit/StewartLynch/CTPicker_SwiftUI)
+[![Platform](http://img.shields.io/badge/platform-iOS-blue.svg?style=flat)](https://developer.apple.com/iphone/index.action)[![](http://img.shields.io/badge/language-Swift-brightgreen.svg?color=orange)](https://developer.apple.com/swift)![](https://img.shields.io/github/tag/stewartlynch/CTPicker_SwiftUI?style=flat)![](https://img.shields.io/github/last-commit/StewartLynch/CTPicker_SwiftUI)
 
 ### What is this?
 
@@ -16,7 +16,7 @@ If you wish to limit your user to picking from an array of strings, then one of 
 
 Watch this video to see installation and use as described below. Additional tips for adding more than one CTPickerView to a SwiftUI view is also presented in the video.
 
-Coming soon
+https://www.youtube.com/watch?v=0DqLReYTry8
 
 #### The Starting Example
 
@@ -70,7 +70,7 @@ The next step is to create the presentation boolean variable that when set to tr
 
 ##### Step 3 - Create String Arrays @State variables if necessary
 
-When presenting the CTPickerView, you will be asked to pass in the array of strings and this array will be bound to a @Binding variable in CTPicker so that if you add to the array, it will be updated in your content view as well. (See saving data below). 
+When presenting the CTPickerView, you will be asked to pass in the array of strings and this array will be bound to a @Binding variable in the CTPickerView so that if you append to the array, it will be updated in your content view as well. (See saving data below). 
 
 You can pass in any array of strings,  but to continue on with this example, I will just create it within the existing view and it must be created as an @State variable (or be the property of an @ObservedObject)
 
@@ -102,7 +102,7 @@ The CTPickerView by default requires 3 parameters which are the 3 state variable
 }
 ```
 
-##### Step 6 - Disable Entry into the TextField and add TapGesture
+##### Step 6 - Disable Entry into the TextField and add onTapGesture
 
 To present the picker, we must first disable entry into the TextField  (`.disabled(true)`) and subsequently add an `.onTapGesture` to the TextField.
 
@@ -156,7 +156,7 @@ CTPickerView(presentPicker: $presentPicker,
              saveUpdates: saveUpdates)
 ```
 
-If you run the application now, you will see that the picker has an Add button on the top right.  If you enter a value in the filter field that does not match any of the existing items, it will be enabled.  When you tap it, the item gets added to the array and runs the `saveUpdates` function, passing in this new value and the `CTPickerView` is dismissed.  If you tap the field again, you will see your new entry in the selection list.
+If you run the application now, you will see that the picker has an Add button on the top right.  If you enter a value in the filter field that does not match any of the existing items, it will be enabled.  When you tap it, the item gets added to the array and runs the `saveUpdates` function, passing in this new value and the `CTPickerView` is dismissed.  If you tap the field again, you will see your new entry in the selection list and the TextField is populated with this value
 
 ##### Step 9 - Fixing the dismissal Animation
 
@@ -229,3 +229,7 @@ Here is your CTPickerView with the saveUpdates function and all optional paramet
 ![Optionals](ReadMeImages/Optionals.png)
 
 If you are more of a visual learner and also want to get tips on how to add more than one CTPickerView to a single SwiftUI View, please watch the YouTube video.
+
+https://www.youtube.com/watch?v=0DqLReYTry8
+
+Interested in a UIKit version of CTPicker?  See https://github.com/StewartLynch/CTPicker
