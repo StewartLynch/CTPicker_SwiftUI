@@ -1,4 +1,5 @@
 # CTPicker_SwiftUI
+
 [![Platform](http://img.shields.io/badge/platform-iOS-blue.svg?style=flat)](https://developer.apple.com/iphone/index.action)[![](http://img.shields.io/badge/language-Swift-brightgreen.svg?color=orange)](https://developer.apple.com/swift)![](https://img.shields.io/github/tag/stewartlynch/CTPicker_SwiftUI?style=flat)![](https://img.shields.io/github/last-commit/StewartLynch/CTPicker_SwiftUI)
 
 ### What is this?
@@ -17,6 +18,8 @@ If you wish to limit your user to picking from an array of strings, then one of 
 Watch this video to see installation and use as described below. Additional tips for adding more than one CTPickerView to a SwiftUI view is also presented in the video.
 
 https://www.youtube.com/watch?v=0DqLReYTry8
+
+<iframe width="560" height="315" src="https://www.youtube.com/embed/0DqLReYTry8" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
 
 #### The Starting Example
 

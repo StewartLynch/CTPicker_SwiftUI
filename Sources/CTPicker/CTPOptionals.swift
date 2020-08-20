@@ -8,7 +8,7 @@
 
 import UIKit
 
-public class CTPColors {
+public struct CTPColors {
     // Default values
     var headerBackgroundColor: UIColor
     var headerTintColor: UIColor
@@ -19,28 +19,21 @@ public class CTPColors {
     }
 }
 
-public class CTPStrings {
+public struct CTPStrings {
     // Default values
     var pickText: String
     var addText: String
-    var noItemText: String
     var searchPlaceHolder: String
-    var newEntry: String
     var cancelBtnTitle: String
     
-    public init(pickText: String = "Tap an entry to select it, or type in new entry.",
-                addText: String = "Type new entry then tap '+' button to add new entry",
-                noItemText: String = "No items match",
+    public init(pickText: String = "Filter list then tap entry to select.",
+                addText: String = "Filter list then tap entry to select, or type new entry then '+' to add.",
                 searchPlaceHolder: String = "Filter by entering text...",
-                newEntry: String = "New Entry",
                 cancelBtnTitle: String =  "Cancel") {
         self.pickText = pickText
         self.addText = addText
-        self.noItemText = noItemText
         self.searchPlaceHolder = searchPlaceHolder
-        self.newEntry = newEntry
         self.cancelBtnTitle = cancelBtnTitle
     }
 }
-
 

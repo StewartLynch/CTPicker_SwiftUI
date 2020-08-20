@@ -6,38 +6,33 @@
 //  Copyright © 2020 CreaTECH Solutions. All rights reserved.
 //
 
-//
-//  CTPickerView.swift
-//  CTPicker_SwiftUI
-//
-//  Created by Stewart Lynch on 2020-01-06.
-//  Copyright © 2020 CreaTECH Solutions. All rights reserved.
-//
-
 import SwiftUI
+
+public protocol CTPicker {
+    func saveUpdates(_ newItem: String)
+}
 
 public struct CTPickerView: View {
     @Binding var presentPicker:Bool
     @Binding var pickerField:String
-    @Binding var items:[String]
+    var items:[String]
     var saveUpdates: ((String) -> Void)?
-    var noSort:Bool
+    var noSort:Bool?
     var ctpColors:CTPColors?
     var ctpStrings:CTPStrings?
     
-    public init(presentPicker: Binding<Bool>, pickerField: Binding<String>, items: Binding<[String]>, saveUpdates: ((String) -> Void)? = nil, noSort:Bool = false, ctpColors:CTPColors? = nil, ctpStrings: CTPStrings? = nil) {
+    public init(presentPicker: Binding<Bool>, pickerField: Binding<String>, items:[String], saveUpdates: ((String) -> Void)? = nil, noSort:Bool? = false, ctpColors:CTPColors? = nil, ctpStrings: CTPStrings? = nil) {
         self._presentPicker = presentPicker
         self._pickerField = pickerField
-        self._items = items
+        self.items = items
         self.noSort = noSort
         self.ctpColors = ctpColors
         self.ctpStrings = ctpStrings
         self.saveUpdates = saveUpdates
     }
     
-    
     @State var filterString:String = ""
-    @State private var originalItems:[String] = []
+    @State private var filteredItems:[String] = []
     @State private var frameHeight:CGFloat = 400
 
     @State private var headerColors = CTPColors()
@@ -50,11 +45,11 @@ public struct CTPickerView: View {
         }, set: {
             self.filterString = $0
             if self.filterString != "" {
-                self.items = self.originalItems.filter{$0.lowercased().contains(self.filterString.lowercased())}
+                self.filteredItems = self.items.filter{$0.lowercased().contains(self.filterString.lowercased())}
             } else {
-                self.items = self.originalItems
+                self.filteredItems = self.items
             }
-            self.getHeight(ttl: self.items.count)
+            self.setHeight()
         })
         return  ZStack {
             Color.black.opacity(0.4)
@@ -65,44 +60,38 @@ public struct CTPickerView: View {
                             withAnimation {
                                 self.presentPicker = false
                             }
-                            self.items = self.originalItems
                         }) {
                             Text(pickerStrings.cancelBtnTitle)
                         }.padding(10)
-
                         Spacer()
-                        Group {
-                            if saveUpdates != nil {
-                                Button(action: {
-                                    self.items = self.originalItems
-                                    if let _ = self.saveUpdates {
-                                        self.items.append(self.filterString)
-                                        self.saveUpdates!(self.filterString)
-                                    }
-                                    self.pickerField = self.filterString
-                                    withAnimation {
-                                        self.presentPicker = false
-                                    }
-                                }) {
-                                    Image(systemName: "plus.circle")
-                                }.disabled(items.count > 0 || filterString.isEmpty)
-                                    .padding(10)
+                        if let saveUpdates = saveUpdates {
+                            Button(action: {
+                                if !self.items.contains(filterString) {
+                                    saveUpdates(filterString)
+                                }
+                                self.pickerField = self.filterString
+                                withAnimation {
+                                    self.presentPicker = false
+                                }
+                            }) {
+                                Image(systemName: "plus.circle")
+                                    .frame(width: 44, height: 44)
                             }
+                            .disabled(filterString.isEmpty)
                         }
                     }.background(Color(headerColors.headerBackgroundColor))
                         .foregroundColor(Color(headerColors.headerTintColor))
         
-                    Text(items.count > 0 ? pickerStrings.pickText: (saveUpdates != nil) ? pickerStrings.addText : pickerStrings.noItemText)
+                    Text((saveUpdates != nil) ? pickerStrings.addText : pickerStrings.pickText)
                         .font(.caption)
-                        .padding(.horizontal,10)
-                    TextField(pickerField.isEmpty ? items.count > 0 ? pickerStrings.searchPlaceHolder : pickerStrings.newEntry : pickerField, text: filterBinding)
+                        .padding(.leading,10)
+                    TextField(pickerStrings.searchPlaceHolder, text: filterBinding)
                         .textFieldStyle(RoundedBorderTextFieldStyle())
+                        .autocapitalization(.none)
                         .padding()
-//                    if items.count > 0 {
                     List {
-                        ForEach(noSort ? items : items.sorted(), id: \.self) { item in
+                        ForEach(noSort! ? filteredItems : filteredItems.sorted(), id: \.self) { item in
                             Button(action: {
-                                self.items = self.originalItems
                                 self.pickerField = item
                                 withAnimation {
                                     self.presentPicker = false
@@ -112,14 +101,15 @@ public struct CTPickerView: View {
                             }
                         }
                     }
-//                    }
                 }
                 .background(Color(UIColor.secondarySystemBackground))
                 .cornerRadius(10)
+                .frame(maxWidth: 400)
+                .padding(.horizontal,20)
                 .frame(height: frameHeight)
-                .padding(EdgeInsets(top: 20, leading: 10, bottom: 10, trailing: 10))
                 Spacer()
-            }.padding(.top, 20)
+            }
+            .padding(.top, 40)
         }
         .edgesIgnoringSafeArea(.all)
         .onAppear {
@@ -129,22 +119,23 @@ public struct CTPickerView: View {
             if let ctColors = self.ctpColors {
                 self.headerColors = ctColors
             }
-            self.originalItems = self.items
-            self.getHeight(ttl: self.items.count)
+            self.filteredItems = self.items
+            self.setHeight()
         }
     }
     
-    fileprivate func getHeight(ttl:Int) {
+    fileprivate func setHeight() {
         withAnimation  {
-            if ttl > 5 {
+            if filteredItems.count > 5 {
                 frameHeight = 400
-            } else if ttl == 0 {
+            } else if filteredItems.count == 0 {
                 frameHeight = 160
             } else {
-                frameHeight = CGFloat(items.count * 45 + 160)
-                
+                frameHeight = CGFloat(filteredItems.count * 45 + 160)
             }
         }
     }
 }
+
+
 
