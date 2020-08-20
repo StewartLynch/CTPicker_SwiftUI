@@ -2,6 +2,8 @@
 
 [![Platform](http://img.shields.io/badge/platform-iOS-blue.svg?style=flat)](https://developer.apple.com/iphone/index.action)[![](http://img.shields.io/badge/language-Swift-brightgreen.svg?color=orange)](https://developer.apple.com/swift)![](https://img.shields.io/github/tag/stewartlynch/CTPicker_SwiftUI?style=flat)![](https://img.shields.io/github/last-commit/StewartLynch/CTPicker_SwiftUI)
 
+> **Note:** Version 2 has been updated to fix some bugs introduced in SwiftUI.  The implemenation has changed.  Please read the documentation before you update if you are using version 1.0.x
+
 ### What is this?
 
 <img src="ReadMeImages/demo.gif" alt="demo" style="zoom:60%;" />
