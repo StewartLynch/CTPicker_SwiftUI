@@ -12,7 +12,7 @@ public struct CTPColors {
     // Default values
     var headerBackgroundColor: UIColor
     var headerTintColor: UIColor
-    
+
     public init(headerBackgroundColor:UIColor = UIColor.darkGray, headerTintColor: UIColor = UIColor.white) {
         self.headerBackgroundColor  = headerBackgroundColor
         self.headerTintColor = headerTintColor
@@ -25,7 +25,7 @@ public struct CTPStrings {
     var addText: String
     var searchPlaceHolder: String
     var cancelBtnTitle: String
-    
+
     public init(pickText: String = "Filter list then tap entry to select.",
                 addText: String = "Filter list then tap entry to select, or type new entry then '+' to add.",
                 searchPlaceHolder: String = "Filter by entering text...",

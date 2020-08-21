@@ -20,7 +20,7 @@ public struct CTPickerView: View {
     var noSort:Bool?
     var ctpColors:CTPColors?
     var ctpStrings:CTPStrings?
-    
+
     public init(presentPicker: Binding<Bool>, pickerField: Binding<String>, items:[String], saveUpdates: ((String) -> Void)? = nil, noSort:Bool? = false, ctpColors:CTPColors? = nil, ctpStrings: CTPStrings? = nil) {
         self._presentPicker = presentPicker
         self._pickerField = pickerField
@@ -30,14 +30,14 @@ public struct CTPickerView: View {
         self.ctpStrings = ctpStrings
         self.saveUpdates = saveUpdates
     }
-    
+
     @State var filterString:String = ""
     @State private var filteredItems:[String] = []
     @State private var frameHeight:CGFloat = 400
 
     @State private var headerColors = CTPColors()
     @State private var pickerStrings = CTPStrings()
-    
+
     public var body: some View {
         let filterBinding = Binding<String>(
             get: {
@@ -64,10 +64,11 @@ public struct CTPickerView: View {
                             Text(pickerStrings.cancelBtnTitle)
                         }.padding(10)
                         Spacer()
-                        if let saveUpdates = saveUpdates {
+                        Group {
+                        if saveUpdates != nil {
                             Button(action: {
-                                if !self.items.contains(filterString) {
-                                    saveUpdates(filterString)
+                                if !self.items.contains(self.filterString) {
+                                    self.saveUpdates!(self.filterString)
                                 }
                                 self.pickerField = self.filterString
                                 withAnimation {
@@ -79,12 +80,13 @@ public struct CTPickerView: View {
                             }
                             .disabled(filterString.isEmpty)
                         }
+                        }
                     }.background(Color(headerColors.headerBackgroundColor))
                         .foregroundColor(Color(headerColors.headerTintColor))
-        
+
                     Text((saveUpdates != nil) ? pickerStrings.addText : pickerStrings.pickText)
                         .font(.caption)
-                        .padding(.leading,10)
+                        .padding(.horizontal,10)
                     TextField(pickerStrings.searchPlaceHolder, text: filterBinding)
                         .textFieldStyle(RoundedBorderTextFieldStyle())
                         .autocapitalization(.none)
@@ -123,7 +125,7 @@ public struct CTPickerView: View {
             self.setHeight()
         }
     }
-    
+
     fileprivate func setHeight() {
         withAnimation  {
             if filteredItems.count > 5 {

@@ -1,5 +1,5 @@
 //
-//  CTTextView.swift
+//  CTPickerTextView.swift
 //  CTPicker_SwiftUI
 //
 //  Created by Stewart Lynch on 2020-08-19.
@@ -13,7 +13,7 @@ public struct CTPickerTextView: View {
     var placeholder: String
     @Binding var tag: Int
     var selectedTag: Int
-    
+
     public init(presentPicker: Binding<Bool>, fieldString: Binding<String>, placeholder:String, tag: Binding<Int>, selectedTag: Int ) {
         self._presentPicker = presentPicker
         self._fieldString = fieldString
@@ -21,14 +21,14 @@ public struct CTPickerTextView: View {
         self._tag = tag
         self.selectedTag = selectedTag
     }
-    
+
     public var body: some View {
         TextField(placeholder, text: $fieldString).disabled(true)
             .overlay(
                 Button(action: {
-                    tag = selectedTag
+                    self.tag = self.selectedTag
                     withAnimation {
-                        presentPicker = true
+                        self.presentPicker = true
                     }
                 }) {
                     Rectangle().foregroundColor((Color.clear))
