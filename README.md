@@ -17,22 +17,18 @@ If you wish to limit your user to picking from an array of strings, then one of 
 - SwiftUI
 #### The Starting Example
 
-The best way to explain how to implement CTPicker is to work through an example  of how to add CTPicker to a view.  In this example, I will add change the TextField into a CTPickerTextView.  The example is a TextField that asks the user to enter a food item.
+The best way to explain how to implement CTPicker is to work through an example  of how to add CTPicker to a view.  In this example, I will add change the TextField into a CTPickerTextView.  The example is a TextField that asks the user to enter a food item. You can follow along by creating a project using SwiftUI and replace ContentView with the following.
 
 ```swift
-struct ContentView: View {
-    @State private var food:String = ""
-    var body: some View {
-        NavigationView {
-            VStack {
-                TextField("Enter food", text: $food)
-                Spacer()
-            }
-            .textFieldStyle(RoundedBorderTextFieldStyle())
-            .frame(width: 200)
-            .navigationBarTitle("CTPicker Demo")
-        }
+NavigationView {
+    VStack {
+        TextField("Select a Food item", text: $food)
+        Spacer()
     }
+    .padding(.top)
+    .textFieldStyle(RoundedBorderTextFieldStyle())
+    .frame(width: 300)
+    .navigationTitle("CTPicker2-Demo")
 }
 ```
 
@@ -65,11 +61,11 @@ struct ContentView: View, CTPicker {
 }
 ````
 
-> Note:  This will then require you to add a function for updating your array.  You can have Xcode generate the stub for you.  If you are not going to allow updates, you will can just leave the body empty.  More on this in step #
+> Note:  This requires the additon of a `saveUpdates`function.  You can have Xcode generate the stub for you.  If you are not going to allow updates, you will can just leave the body empty.  More on this in step 10 below.
 >
 > ````swift
 > func saveUpdates(_ newItem: String) {
->     
+>     // if you are not allowing updates, leave the body empty
 > }
 > ````
 
@@ -83,7 +79,7 @@ The next step is to create the presentation boolean variable that when set to tr
 
 ##### Step 4 - Create @State variable for your TextField content
 
-If you do not already have a @State variable for your TextField, create one as a String and assign it an empty string.
+Each TextField requires a binding to an @State variable.
 
 ````swift
 @State private var food:String = ""
@@ -91,9 +87,9 @@ If you do not already have a @State variable for your TextField, create one as a
 
 ##### Step 5 - Create String Array and make it @State variable if necessary
 
-When presenting the CTPickerView, you will be asked to pass in the array of strings and this array.  If you are going to allow users to be able to modify the array, it will have to be able to be bound to a @Binding variable in the CTPickerView.  Watch video for other examples and see the saveUpdates function below. 
+When presenting the CTPickerView, you need to pass in an array of strings.  If you are going to allow users to be able to add to the array, it will have to be decoreated with the @State property wrapper.
 
-You can pass in any array of strings,  but to continue on with this example, I will just create it within the existing view and if you are going to allow updates, it must be created as an @State variable (or be able to access it as the property of an @ObservableObject)
+> Watch the video to see how you can submit and modify a collection of objects from which your string array has been created.
 
 ```swift
 @State private var foodArray = ["Milk", "Apples", "Sugar", "Eggs", "Oranges", "Potatoes", "Corn", "Bread"]
@@ -109,7 +105,7 @@ Every CTPicker TextField must have a tag associated with it so that you will be 
 
 ##### Step 7 - Enclose exsiting view in a ZStack
 
-The CTPickerVew is a view that will be presented on top of the exsiting view.  To allow this, we need to surround the existing view including the NavigationView if one exists within a `ZStack`
+The CTPickerVew is a view that will be presented on top of the exsiting view.  To allow this, we need to embed the existing view including the NavigationView, if one exists, within a `ZStack`
 
 ### ![ZStack](ReadMeImages/ZStack.gif)
 
@@ -129,13 +125,13 @@ CTPickerTextView(presentPicker: $presentPicker,
 
 ##### Step 9  - Conditionally Present the CTPicker
 
-You can now add, as the second item in the ZStack, a conditional presentation of the CTPickerView.  The condition will be whenever our `presentPicker` boolean value is set to `true`.  
+You can now add, as the second, frontmost view in the ZStack, a conditional presentation of the CTPickerView.  The condition will be whenever our `presentPicker` boolean value is set to `true`.  
 
-The CTPickerView by default requires 3 parameters which are the 3 state variables:
+The CTPickerView by default requires 3 parameters.
 
 - the presentation boolean -  `$presentPicker`
 - the TextField state variable - `$food`
-- The string array - `$foodArray`
+- The string array - `foodArray`
 
 ```swift
 if presentPicker {
@@ -156,7 +152,7 @@ If you run your app now, you will find that this is indeed a functional picker. 
 
 ##### Step 10 - Add the saveUpdates argument to your CTPickerView
 
-To add items you need to do two things.  First you need to add the saveUpdates function as an argument when presenting CTPickerView.  It can be added right after your items argument.
+To add items you need to do two things.  First you need to add the `saveUpdates` function as an argument when presenting CTPickerView.  It is added right after your items argument.
 
 ````swift
 CTPickerView(presentPicker: $presentPicker,
@@ -168,9 +164,9 @@ CTPickerView(presentPicker: $presentPicker,
 
 ##### Step 11 - Complete the saveUpdates function body
 
-When you add an item in CTPickerView, the saveUpdates function is executed with a string `newItem`argument.  
+When you add an item in CTPickerView, the `saveUpdates` function is executed with a string `newItem`argument.  
 
-It is up to you to add code that will update your array with this new time, and if required persist the data.
+It is up to you to add code that will update your array with this new time, and, if required, persist the data.
 
 In our case, this is straight forward as we have an array of strings, so I can just append the new item.
 
@@ -180,7 +176,9 @@ func saveUpdates(_ newItem:String) {
 }
 ```
 
-If you run the application now, you will see that the picker has an Add button on the top right.  If you enter a value in the filter field that does not match any of the existing items, it will be enabled.  When you tap it,  the `saveUpdates` function is called, passing in this new value and the `CTPickerView` is dismissed.  If you tap the field again.  If you update your array in the saveUpdates function you will see your new entry in the selection list when you tap on the field again.
+If you run the application now, you will see that the picker has an `Add` button on the top right.  If you enter a value in the filter field that does not match any of the existing items, you can tap the `+`button. The `saveUpdates` function is called, passing in this new value and the `CTPickerView` is dismissed. 
+
+If you update your array in the saveUpdates function you will see your new entry in the selection list when you tap on the field again.
 
 ##### Step 9 - Fixing the dismissal Animation
 
@@ -250,8 +248,12 @@ Here is your CTPickerView with the saveUpdates function and all optional paramet
 
 ![Optionals](ReadMeImages/Optionals.png)
 
-If you are more of a visual learner and also want to get tips on how to add more than one CTPickerView to a single SwiftUI View, please watch the YouTube video.
+If you are more of a visual learner and also want to get tips on how to add more than one CTPickerView to a single SwiftUI View, please watch the YouTube video. 
 
-Video Coming Soon
+<a href="http://www.youtube.com/watch?feature=player_embedded&v=EQgDcPpgdJk
+" target="_blank"><img src="http://img.youtube.com/vi/EQgDcPpgdJk/0.jpg" 
+alt="Reusable Custom Picker for SwiftUI" width="480" height="360" border="10" /></a>
+
+The video is comprehensive and also covers, in addition to above, the ability to use an Observable object and the new SwiftUI @AppStorage property wrapper to to persist data between sessions.
 
 Interested in a UIKit version of CTPicker?  See https://github.com/StewartLynch/CTPicker
