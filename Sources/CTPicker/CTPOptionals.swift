@@ -11,15 +11,15 @@ import UIKit
 
 public enum CTPColors {
     // Default values
-    static let headerBackgroundColor: UIColor = .darkGray
-    static let headerTintColor: UIColor = .white
+    static var headerBackgroundColor: UIColor = .darkGray
+    static var headerTintColor: UIColor = .white
 }
 
 public enum CTPStrings {
     // Default values
-    static let pickText: String = "Filter list then tap entry to select."
-    static let addText: String = "Filter list then tap entry to select, or type new entry then '+' to add."
-    static let searchPlaceHolder: String = "Filter by entering text..."
-    static let cancelButtonTitle: String =  "Cancel"
+    static var pickText: String = "Filter list then tap entry to select."
+    static var addText: String = "Filter list then tap entry to select, or type new entry then '+' to add."
+    static var searchPlaceHolder: String = "Filter by entering text..."
+    static var cancelButtonTitle: String =  "Cancel"
 }
 
