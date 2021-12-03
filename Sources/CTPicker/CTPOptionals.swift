@@ -4,7 +4,8 @@
 //
 //  Created by Stewart Lynch on 2020-01-07.
 //  Updated by Florian Schweizer on 2021-11-26.
-//  Copyright © 2020 CreaTECH Solutions. All rights reserved.
+//  Updated by Stewart Lynch on 2021-12-02.
+//  Copyright © 2021 CreaTECH Solutions. All rights reserved.
 //
 
 import UIKit
@@ -22,4 +23,3 @@ public enum CTPStrings {
     static var searchPlaceHolder: String = "Filter by entering text..."
     static var cancelButtonTitle: String =  "Cancel"
 }
-

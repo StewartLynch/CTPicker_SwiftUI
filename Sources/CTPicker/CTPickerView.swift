@@ -4,23 +4,21 @@
 //
 //  Created by Stewart Lynch on 2020-01-06.
 //  Updated by Florian Schweizer on 2021-11-26.
-//  Copyright © 2020 CreaTECH Solutions. All rights reserved.
+//  Updated by Stewart Lynch on 2021-12-02.
+//  Copyright © 2021 CreaTECH Solutions. All rights reserved.
 //
 
 import SwiftUI
 
 public struct CTPickerView: View {
     public typealias OptionalStringToVoid = ((String) -> Void)?
-    
     @Binding var presentPicker: Bool
     @Binding var pickerField: String
-    
     @State private var text: String = ""
     @State private var filteredItems: [String] = []
     @State private var frameHeight: CGFloat = 400
-    
     private var items: [String]
-    private var onSaveUpdates: OptionalStringToVoid
+    private var saveUpdates: OptionalStringToVoid
     private var noSort: Bool?
     private var ctpColors: CTPColors?
     private var ctpStrings: CTPStrings?
@@ -32,7 +30,7 @@ public struct CTPickerView: View {
         noSort: Bool? = false,
         ctpColors: CTPColors? = nil,
         ctpStrings: CTPStrings? = nil,
-        onSaveUpdates: OptionalStringToVoid = nil
+        saveUpdates: OptionalStringToVoid = nil
     ) {
         self._presentPicker = presentPicker
         self._pickerField = pickerField
@@ -40,16 +38,14 @@ public struct CTPickerView: View {
         self.noSort = noSort
         self.ctpColors = ctpColors
         self.ctpStrings = ctpStrings
-        self.onSaveUpdates = onSaveUpdates
+        self.saveUpdates = saveUpdates
     }
-    
     private var filterBinding: Binding<String> {
         Binding<String>(
             get: {
                 text
             }, set: {
                 text = $0
-                
                 if text.isEmpty {
                     filteredItems = items
                 } else {
@@ -57,7 +53,6 @@ public struct CTPickerView: View {
                         $0.lowercased().contains(text.lowercased())
                     }
                 }
-                
                 setHeight()
             }
         )
@@ -66,7 +61,6 @@ public struct CTPickerView: View {
     public var body: some View {
         ZStack {
             Color.black.opacity(0.4)
-            
             VStack {
                 VStack(alignment: .leading, spacing: 5) {
                     HStack {
@@ -76,20 +70,18 @@ public struct CTPickerView: View {
                             }
                         }
                         .padding(10)
-                        
                         Spacer()
-                        
                         Group {
-                            if onSaveUpdates != nil {
-                                Button(action: {
+                            if saveUpdates != nil {
+                                Button {
                                     if !items.contains(text) {
-                                        onSaveUpdates!(text)
+                                        saveUpdates!(text)
                                     }
                                     pickerField = text
                                     withAnimation {
                                         presentPicker = false
                                     }
-                                }) {
+                                } label: {
                                     Image(systemName: "plus.circle")
                                         .frame(width: 44, height: 44)
                                 }
@@ -99,16 +91,14 @@ public struct CTPickerView: View {
                     }
                     .background(Color(CTPColors.headerBackgroundColor))
                     .foregroundColor(Color(CTPColors.headerTintColor))
-
-                    Text((onSaveUpdates != nil) ? CTPStrings.addText : CTPStrings.pickText)
+                    Text((saveUpdates != nil) ? CTPStrings.addText : CTPStrings.pickText)
                         .font(.caption)
+                        .fixedSize(horizontal: false, vertical: true)
                         .padding(.horizontal, 10)
-                    
                     TextField(CTPStrings.searchPlaceHolder, text: filterBinding)
                         .textFieldStyle(RoundedBorderTextFieldStyle())
                         .autocapitalization(.none)
                         .padding()
-                    
                     List {
                         ForEach(noSort! ? filteredItems : filteredItems.sorted(), id: \.self) { item in
                             Button(item) {
@@ -119,13 +109,13 @@ public struct CTPickerView: View {
                             }
                         }
                     }
+                    .listStyle(.plain)
                 }
                 .background(Color(UIColor.secondarySystemBackground))
                 .cornerRadius(10)
                 .frame(maxWidth: 400)
-                .padding(.horizontal,20)
+                .padding(.horizontal, 20)
                 .frame(height: frameHeight)
-                
                 Spacer()
             }
             .padding(.top, 40)
@@ -138,7 +128,7 @@ public struct CTPickerView: View {
     }
 
     fileprivate func setHeight() {
-        withAnimation  {
+        withAnimation {
             if filteredItems.isEmpty {
                 frameHeight = 160
             } else if filteredItems.count > 5 {
@@ -149,6 +139,3 @@ public struct CTPickerView: View {
         }
     }
 }
-
-
-

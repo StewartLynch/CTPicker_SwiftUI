@@ -11,12 +11,12 @@ let package = Package(
     products: [
         .library(
             name: "CTPicker",
-            targets: ["CTPicker"]),
+            targets: ["CTPicker"])
     ],
     dependencies: [],
     targets: [
         .target(
             name: "CTPicker",
-            dependencies: []),
+            dependencies: [])
     ]
 )
