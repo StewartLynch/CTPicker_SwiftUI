@@ -27,10 +27,10 @@ public struct CTPickerView: View {
         presentPicker: Binding<Bool>,
         pickerField: Binding<String>,
         items: [String],
-        saveUpdates: OptionalStringToVoid = nil
+        saveUpdates: OptionalStringToVoid = nil,
         noSort: Bool? = false,
         ctpColors: CTPColors? = nil,
-        ctpStrings: CTPStrings? = nil,
+        ctpStrings: CTPStrings? = nil
     ) {
         self._presentPicker = presentPicker
         self._pickerField = pickerField

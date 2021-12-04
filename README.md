@@ -2,7 +2,7 @@
 
 [![Platform](http://img.shields.io/badge/platform-iOS-blue.svg?style=flat)](https://developer.apple.com/iphone/index.action)[![](http://img.shields.io/badge/language-Swift-brightgreen.svg?color=orange)](https://developer.apple.com/swift)![](https://img.shields.io/github/tag/stewartlynch/CTPicker_SwiftUI?style=flat)![](https://img.shields.io/github/last-commit/StewartLynch/CTPicker_SwiftUI)
 
-> **Note:** Version 2 has been updated to fix some bugs introduced in SwiftUI.  The implemenation has changed.  Please read the documentation before you update if you are using version 1.0.x
+> **Note:** Version 2 has been updated to fix some bugs introduced in SwiftUI.  The implementation has changed.  Please read the documentation before you update if you are using version 1.0.x
 
 ### What is this?
 
@@ -53,23 +53,7 @@ In the View where you are going to implement `CTPicker` on your TextField, impor
 import CTPicker
 ```
 
-##### Step 2 - Conform your view to the CTPicker protocol
-
-````swift
-struct ContentView: View, CTPicker {
-  
-}
-````
-
-> Note:  This requires the additon of a `saveUpdates`function.  You can have Xcode generate the stub for you.  If you are not going to allow updates, you will can just leave the body empty.  More on this in step 10 below.
->
-> ````swift
-> func saveUpdates(_ newItem: String) {
->     // if you are not allowing updates, leave the body empty
-> }
-> ````
-
-##### Step 3 - Create initial presentation @State variable
+##### Step 2 - Create initial presentation @State variable
 
 The next step is to create the presentation boolean variable that when set to true, will present the picker.  As this will be changed in the view, it must be created as an @State variable.  The initial value is set to false.
 
@@ -77,7 +61,7 @@ The next step is to create the presentation boolean variable that when set to tr
 @State private var presentPicker:Bool = false
 ```
 
-##### Step 4 - Create @State variable for your TextField content
+##### Step 3 - Create @State variable for your TextField content
 
 Each TextField requires a binding to an @State variable.
 
@@ -85,9 +69,9 @@ Each TextField requires a binding to an @State variable.
 @State private var food:String = ""
 ````
 
-##### Step 5 - Create String Array and make it @State variable if necessary
+##### Step 4 - Create String Array and make it @State variable if necessary
 
-When presenting the CTPickerView, you need to pass in an array of strings.  If you are going to allow users to be able to add to the array, it will have to be decoreated with the @State property wrapper.
+When presenting the CTPickerView, you need to pass in an array of strings.  If you are going to allow users to be able to add to the array, it will have to be decorated with the @State property wrapper.
 
 > Watch the video to see how you can submit and modify a collection of objects from which your string array has been created.
 
@@ -95,7 +79,7 @@ When presenting the CTPickerView, you need to pass in an array of strings.  If y
 @State private var foodArray = ["Milk", "Apples", "Sugar", "Eggs", "Oranges", "Potatoes", "Corn", "Bread"]
 ```
 
-##### Step 6 - Create a tag @State Integer variable
+##### Step 5 - Create a tag @State Integer variable
 
 Every CTPicker TextField must have a tag associated with it so that you will be able to present the correct picker and save updates if you have more than one picker on your view.
 
@@ -103,15 +87,15 @@ Every CTPicker TextField must have a tag associated with it so that you will be 
 @State private var tag: Int = 1
 ````
 
-##### Step 7 - Enclose exsiting view in a ZStack
+##### Step 6 - Enclose existing view in a ZStack
 
-The CTPickerVew is a view that will be presented on top of the exsiting view.  To allow this, we need to embed the existing view including the NavigationView, if one exists, within a `ZStack`
+The CTPickerVew is a view that will be presented on top of the existing view.  To allow this, we need to embed the existing view including the NavigationView, if one exists, within a `ZStack`
 
 ### ![ZStack](ReadMeImages/ZStack.gif)
 
-##### Step 8 - Create a CPickerTextView
+##### Step 7 - Create a CPickerTextView
 
-Create, or, if you already have a TextField in your view, replace it with a CTPickerTextView.  This view requires that ou pass in a binding to your presesentPicker, and fieldString state variables along with the placeholder text, a binding to the tag @State variable and a tag value for your CTPickerTextView.  If you only have one TextField, you can set the selectedTag to 1.
+Create, or, if you already have a TextField in your view, replace it with a CTPickerTextView.  This view requires that you pass in a binding to your presesentPicker, and fieldString state variables along with the placeholder text, a binding to the tag @State variable and a tag value for your CTPickerTextView.  If you only have one TextField, you can set the selectedTag to 1.
 
  ````swift
 CTPickerTextView(presentPicker: $presentPicker,
@@ -121,9 +105,7 @@ CTPickerTextView(presentPicker: $presentPicker,
                  selectedTag: 1)
  ````
 
-
-
-##### Step 9  - Conditionally Present the CTPicker
+##### Step 8  - Conditionally Present the CTPicker
 
 You can now add, as the second, frontmost view in the ZStack, a conditional presentation of the CTPickerView.  The condition will be whenever our `presentPicker` boolean value is set to `true`.  
 
@@ -142,29 +124,27 @@ if presentPicker {
 }
 ```
 
-
-
 The final result looks like this (numbers refer to steps above)
 
-![Basic](ReadMeImages/Basic.png)
+![Basic](ReadMeImages/BasicNew.png)
 
 If you run your app now, you will find that this is indeed a functional picker.  However, we have not yet added the ability to add items.
 
-##### Step 10 - Add the saveUpdates argument to your CTPickerView
+### Adding items to your array (Optional)
 
-To add items you need to do two things.  First you need to add the `saveUpdates` function as an argument when presenting CTPickerView.  It is added right after your items argument.
+If you wish to allow users to update items in the picker arrays, you will need to create a **saveUpdates** function.
 
-````swift
-CTPickerView(presentPicker: $presentPicker,
-             pickerField: $food,
-             items: foodArray,
-             saveUpdates: saveUpdates
-)
-````
+##### Step 1 - Create a SaveUpdates function
 
-##### Step 11 - Complete the saveUpdates function body
+Create a function called saveUpdates that has a single `newItem` string parameter
 
-When you add an item in CTPickerView, the `saveUpdates` function is executed with a string `newItem`argument.  
+> ````swift
+> func saveUpdates(_ newItem: String) {
+>  
+> }
+> ````
+
+When you add an item in CTPickerView, the `saveUpdates` function is executed with a string `newItem` argument.  
 
 It is up to you to add code that will update your array with this new time, and, if required, persist the data.
 
@@ -176,11 +156,23 @@ func saveUpdates(_ newItem:String) {
 }
 ```
 
+##### Step 2 - Add the saveUpdates argument to your CTPickerView
+
+Add the `saveUpdates` function as an argument when presenting CTPickerView.  It is added right after your items argument.
+
+````swift
+CTPickerView(presentPicker: $presentPicker,
+             pickerField: $food,
+             items: foodArray,
+             saveUpdates: saveUpdates
+)
+````
+
 If you run the application now, you will see that the picker has an `Add` button on the top right.  If you enter a value in the filter field that does not match any of the existing items, you can tap the `+`button. The `saveUpdates` function is called, passing in this new value and the `CTPickerView` is dismissed. 
 
 If you update your array in the saveUpdates function you will see your new entry in the selection list when you tap on the field again.
 
-##### Step 9 - Fixing the dismissal Animation
+### Fixing the dismissal Animation
 
 You will see that when the CTPickerView dismisses, it is immediate. There is no animation.  I believe that this is a bug in SwiftUI, but there is a quick fix.
 
@@ -196,13 +188,13 @@ There are three additional optional parameters that you can pass to the CTPicker
 
 ##### Item Sorting
 
-By default, the items in your array are sorted alphabetically.  If you wish to keep the sort order of your string array as is, you can pass the optional parameter
+By default, the items in your array are sorted alphabetically.  If you wish to keep the sort order of your string array as is, you can pass the optional parameter.
 
 ```swift
 noSort: true
 ```
 
-this must be added after the `saveUpdates` parameter  if you have one. If not, it follows the `items` parameter.
+This must be added after the `saveUpdates` parameter  if you have one. If not, it follows the `items` parameter.
 
 ##### Custom Colors
 
@@ -232,7 +224,7 @@ searchPlaceHolder - "Filter by entering text..."
 cancelBtnTitle - "Cancel"
 ```
 
-As with the `CTPColors`, you can create an instance of `CTPStrings` and change one or more of the properties.  For example, if all you want to to is change the `cancelBtnTitle` property, you can create your ctpStrings instance like this:
+As with the `CTPColors`, you can create an instance of `CTPStrings` and change one or more of the properties.  For example, if all you want to do is change the `cancelBtnTitle` property, you can create your ctpStrings instance like this:
 
 ```swift
 let ctpStrings = CTPStrings(cancelBtnTitle: "Dismiss")
