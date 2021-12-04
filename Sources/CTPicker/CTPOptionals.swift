@@ -10,16 +10,31 @@
 
 import UIKit
 
-public enum CTPColors {
+public struct CTPColors {
     // Default values
-    public static var headerBackgroundColor: UIColor = .darkGray
-    public static var headerTintColor: UIColor = .white
+    var headerBackgroundColor: UIColor
+    var headerTintColor: UIColor
+    
+    public init(headerBackgroundColor:UIColor = UIColor.darkGray, headerTintColor: UIColor = UIColor.white) {
+        self.headerBackgroundColor  = headerBackgroundColor
+        self.headerTintColor = headerTintColor
+    }
 }
 
-public enum CTPStrings {
+public struct CTPStrings {
     // Default values
-    public static var pickText: String = "Filter list then tap entry to select."
-    public static var addText: String = "Filter list then tap entry to select, or type new entry then '+' to add."
-    public static var searchPlaceHolder: String = "Filter by entering text..."
-    public static var cancelButtonTitle: String =  "Cancel"
+    var pickText: String
+    var addText: String
+    var searchPlaceHolder: String
+    var cancelBtnTitle: String
+    
+    public init(pickText: String = "Filter list then tap entry to select.",
+                addText: String = "Filter list then tap entry to select, or type new entry then '+' to add.",
+                searchPlaceHolder: String = "Filter by entering text...",
+                cancelBtnTitle: String =  "Cancel") {
+        self.pickText = pickText
+        self.addText = addText
+        self.searchPlaceHolder = searchPlaceHolder
+        self.cancelBtnTitle = cancelBtnTitle
+    }
 }
