@@ -10,6 +10,11 @@
 
 import SwiftUI
 
+// Backward compatibility protocol
+public protocol CTPicker {
+    func saveUpdates(_ newItem: String)
+}
+
 public struct CTPickerTextView: View {
     @Binding var presentPicker: Bool
     @Binding var fieldString: String
