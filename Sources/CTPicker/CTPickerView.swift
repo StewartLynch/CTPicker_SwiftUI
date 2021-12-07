@@ -127,6 +127,12 @@ public struct CTPickerView: View {
         }
         .edgesIgnoringSafeArea(.all)
         .onAppear {
+            if let ctString = self.ctpStrings {
+                self.pickerStrings = ctString
+            }
+            if let ctColors = self.ctpColors {
+                self.headerColors = ctColors
+            }
             filteredItems = items
             setHeight()
         }
