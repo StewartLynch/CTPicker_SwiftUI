@@ -58,16 +58,21 @@ public struct CTPickerView: View {
         )
     }
 
+    @State private var headerColors = CTPColors()
+    @State private var pickerStrings = CTPStrings()
+    
     public var body: some View {
         ZStack {
             Color.black.opacity(0.4)
             VStack {
                 VStack(alignment: .leading, spacing: 5) {
                     HStack {
-                        Button(CTPStrings.cancelButtonTitle) {
+                        Button {
                             withAnimation {
-                                presentPicker = false
+                                self.presentPicker = false
                             }
+                        } label: {
+                            Text(pickerStrings.cancelBtnTitle)
                         }
                         .padding(10)
                         Spacer()
@@ -89,13 +94,13 @@ public struct CTPickerView: View {
                             }
                         }
                     }
-                    .background(Color(CTPColors.headerBackgroundColor))
-                    .foregroundColor(Color(CTPColors.headerTintColor))
-                    Text((saveUpdates != nil) ? CTPStrings.addText : CTPStrings.pickText)
+                    .background(Color(headerColors.headerBackgroundColor))
+                    .foregroundColor(Color(headerColors.headerTintColor))
+                    Text((saveUpdates != nil) ? pickerStrings.addText : pickerStrings.pickText)
                         .font(.caption)
                         .fixedSize(horizontal: false, vertical: true)
                         .padding(.horizontal, 10)
-                    TextField(CTPStrings.searchPlaceHolder, text: filterBinding)
+                    TextField(pickerStrings.searchPlaceHolder, text: filterBinding)
                         .textFieldStyle(RoundedBorderTextFieldStyle())
                         .autocapitalization(.none)
                         .padding()
